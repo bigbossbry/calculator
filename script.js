@@ -19,7 +19,32 @@ for (let i = 0; i<20; i++) {
     if (i==19) {calcBtn.textContent = `${arr1[0]}`;}
 }
 
+let firstNum = 0;
+let secondNum = null;
+let operator = null;
 
+function addition(firstNum, secondNum) {
+    return firstNum + secondNum;
+}
 
+function subtraction(firstNum, secondNum) {
+    return firstNum - secondNum;
+}
 
+function multiplication(firstNum, secondNum) {
+    return firstNum * secondNum;
+}
 
+function division(firstNum, secondNum) {
+    return firstNum / secondNum;
+}
+
+function assignOperator(operator) {
+
+}
+
+//Sa approach na ginagawa ko, I feel like the best next step is to assign numbers dun sa firstNum and secondNum variables using keypresses. Second is get operator using keypress, and then give results. Best basis natin is si michalosman calculator. very nice yung rendering niya. Siguro let's start with grouping the buttons according to functions.
+// Buttons 0-9, decimal point, and '+/-' will be used to update either first and second number.
+// operator buttons include +, -, *, /, =
+// AC is all clear or reset, C is backspace
+// % is a special operator that will operate using the secondNum as a percentage of the first num
