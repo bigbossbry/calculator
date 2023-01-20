@@ -14,9 +14,11 @@ body {
     border: 0.5px solid  black;
 }
 .calc-screen {
-    flex-grow: 1;
     border: 0.5px solid  black;
     margin: 5px 5px 5px 5px;
+    text-align: right;
+    font-size: 80px; 
+    line-height: ;
 }
 .btns-container {
     display: grid;

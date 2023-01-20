@@ -43,6 +43,9 @@ function assignOperator(operator) {
 
 }
 
+
+const screen = document.querySelector('.calc-screen');
+screen.textContent = firstNum;
 //Sa approach na ginagawa ko, I feel like the best next step is to assign numbers dun sa firstNum and secondNum variables using keypresses. Second is get operator using keypress, and then give results. Best basis natin is si michalosman calculator. very nice yung rendering niya. Siguro let's start with grouping the buttons according to functions.
 // Buttons 0-9, decimal point, and '+/-' will be used to update either first and second number.
 // operator buttons include +, -, *, /, =
