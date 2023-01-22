@@ -8,44 +8,73 @@ for (let i = 0; i<20; i++) {
     calcBtn.classList.add('calc-button');
     calcBtn.classList.add(`btn-${i}`);
     btnsContainer.appendChild(calcBtn);
-    if (i>=0 && i <=3) {calcBtn.textContent = `${arr3[i]}`;}
-    if (i>=4 && i <=6) {calcBtn.textContent = `${i+3}`;}
-    if (i>=8 && i <=10) {calcBtn.textContent = `${i-4}`;}
-    if (i>=12 && i <=14) {calcBtn.textContent = `${i-11}`;}
-    if (i>=16 && i <=18) {calcBtn.textContent = `${arr2[i-16]}`;}
-    if (i==7) {calcBtn.textContent = `${arr1[3]}`;}
-    if (i==11) {calcBtn.textContent = `${arr1[2]}`;}
-    if (i==15) {calcBtn.textContent = `${arr1[1]}`;}
-    if (i==19) {calcBtn.textContent = `${arr1[0]}`;}
+    if (i>=0 && i <=3) calcBtn.textContent = `${arr3[i]}`;
+    if (i>=4 && i <=6) calcBtn.textContent = `${i+3}`;
+    if (i>=8 && i <=10) calcBtn.textContent = `${i-4}`;
+    if (i>=12 && i <=14) calcBtn.textContent = `${i-11}`;
+    if (i>=16 && i <=18) calcBtn.textContent = `${arr2[i-16]}`;
+    if (i==7) calcBtn.textContent = `${arr1[3]}`;
+    if (i==11) calcBtn.textContent = `${arr1[2]}`;
+    if (i==15) calcBtn.textContent = `${arr1[1]}`;
+    if (i==19) calcBtn.textContent = `${arr1[0]}`;
+    calcBtn.dataset.value = calcBtn.textContent;
 }
 
-let firstNum = 0;
+let firstNum = '0';
 let secondNum = null;
 let operator = null;
 
-function addition(firstNum, secondNum) {
-    return firstNum + secondNum;
+function operate (first, second, operator) {
+    switch(operator) {
+        case '+': 
+            return first + second;
+
+        case '-':
+            return first - second;
+
+        case '*':
+            return first * second;
+
+        case '/':
+            if(second !==0) return first / second;
+            return 'You cannot divide by 0!';
+
+        default:
+            return;
+    }
 }
 
-function subtraction(firstNum, secondNum) {
-    return firstNum - secondNum;
-}
-
-function multiplication(firstNum, secondNum) {
-    return firstNum * secondNum;
-}
-
-function division(firstNum, secondNum) {
-    return firstNum / secondNum;
-}
-
-function assignOperator(operator) {
-
+function assignOperator(event) {
+    operator = event.target.dataset.value;
 }
 
 
 const screen = document.querySelector('.calc-screen');
-screen.textContent = firstNum;
+screen.textContent = Number(firstNum);
+
+const calcBtns = document.querySelectorAll('.calc-button');
+//CSS [attribute^=value];
+
+function updateFirstNum (event) {
+    if (firstNum.length <= 9) {firstNum += event.target.dataset.value;} 
+    screen.textContent = Number(firstNum);
+}
+
+function listenClick (button) {
+    if(button.dataset.value >= 0 && button.dataset.value <= 9) button.addEventListener('mousedown', updateFirstNum);
+    if(button.dataset.value == '+' || button.dataset.value == '-' || button.dataset.value == '*' || button.dataset.value == '/') button.addEventListener('mousedown', assignOperator);
+} //maybe I can add selectors here to combine listen press and listen operator
+
+function listenOperator (button) {
+    button.addEventListener('mousedown', assignOperator);
+}
+
+calcBtns.forEach(listenClick);
+
+
+// dapat pag pindot ng '=' button, yung value ma-assign sa firstNum;
+
+
 //Sa approach na ginagawa ko, I feel like the best next step is to assign numbers dun sa firstNum and secondNum variables using keypresses. Second is get operator using keypress, and then give results. Best basis natin is si michalosman calculator. very nice yung rendering niya. Siguro let's start with grouping the buttons according to functions.
 // Buttons 0-9, decimal point, and '+/-' will be used to update either first and second number.
 // operator buttons include +, -, *, /, =
