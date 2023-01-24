@@ -20,32 +20,42 @@ for (let i = 0; i<20; i++) {
     calcBtn.dataset.value = calcBtn.textContent;
 }
 
-let firstNum = '0';
+let firstNum = null;
 let secondNum = null;
 let operator = null;
 
-function operate (first, second, operator) {
-    switch(operator) {
+let operandToggler = 1;
+
+// can also be the evaluate fn
+function operate (first, second, third) {
+    switch(third) {
         case '+': 
-            return first + second;
+            let sum = Number(first) + Number(second);
+            return sum;
 
         case '-':
-            return first - second;
+            let difference = Number(first) - Number(second);
+            return difference;
 
         case '*':
-            return first * second;
+            let product = Number(first) * Number(second);
+            return product;
 
         case '/':
-            if(second !==0) return first / second;
+            if(second !==0) { 
+                let quotient = Number(first) / Number(second);
+                return quotient;
+            }
             return 'You cannot divide by 0!';
 
         default:
             return;
     }
-}
+} // call this using '=' button, parameters are firstNum, secondNum, operator
 
 function assignOperator(event) {
     operator = event.target.dataset.value;
+    operandToggler = 2;
 }
 
 
@@ -55,15 +65,46 @@ screen.textContent = Number(firstNum);
 const calcBtns = document.querySelectorAll('.calc-button');
 //CSS [attribute^=value];
 
-function updateFirstNum (event) {
-    if (firstNum.length <= 9) {firstNum += event.target.dataset.value;} 
-    screen.textContent = Number(firstNum);
+function appendNum (event) {
+    if (operandToggler == 1) {
+    if (firstNum === null) {
+        if (event.target.dataset.value === '0') {return;}
+        firstNum = event.target.dataset.value;
+    } 
+    else if (firstNum.length <= 9) {
+        firstNum += event.target.dataset.value;
+    } 
+    screen.textContent = firstNum;
+} else if (operandToggler == 2) {
+    if (secondNum === null) {
+        if (event.target.dataset.value === '0') {return;}
+        secondNum = event.target.dataset.value;
+    } 
+    else if (secondNum.length <= 9) {
+        secondNum += event.target.dataset.value;
+    } 
+    screen.textContent = secondNum;
 }
+}
+// Add din tayo ng variable identifier/toggler. Kunware if variable = 1, update firstNum, if var=2, update second num ganun
+
+function appendPoint () {
+    if (firstNum === null) {firstNum = '0';}
+    if (firstNum.includes('.')) {return;}
+    firstNum += '.';
+    screen.textContent = firstNum;
+}
+//Currently figuring out how to remove 0 sa first digit, but reflect the 1.0 sa decimal
+//Parang best way is make a method to find if there's a decimal point in any position sa characters, tapos do while loop
 
 function listenClick (button) {
-    if(button.dataset.value >= 0 && button.dataset.value <= 9) button.addEventListener('mousedown', updateFirstNum);
-    if(button.dataset.value == '+' || button.dataset.value == '-' || button.dataset.value == '*' || button.dataset.value == '/') button.addEventListener('mousedown', assignOperator);
-} //maybe I can add selectors here to combine listen press and listen operator
+    if(button.dataset.value >= 0 && button.dataset.value <= 9) {button.addEventListener('mousedown', appendNum);}
+    if(button.dataset.value == '+' || button.dataset.value == '-' || button.dataset.value == '*' || button.dataset.value == '/') {button.addEventListener('mousedown', assignOperator);}
+    if(button.dataset.value == '.') {button.addEventListener('mousedown', appendPoint);}
+    //if(for C, +/-, and decimal)
+    //if(for AC)
+    //if(% and =, kung kaya sila pagsamahin sa isang function)
+}
 
 function listenOperator (button) {
     button.addEventListener('mousedown', assignOperator);
