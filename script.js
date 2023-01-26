@@ -50,7 +50,7 @@ function operate (first, second, third) {
                 return quotient;
             }
             screen.textContent = 'You cannot divide by 0!';
-            return 'You cannot divide by 0!';
+            return;
 
         default:
             return;
