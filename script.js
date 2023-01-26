@@ -1,3 +1,6 @@
+// bukas ituloy yung % button functionality naman, afterwards, i-try yung CSS/JS effects naman such as hover, press, etc.
+
+// Note: yung basic  calculator algorithm (Canon LS-88HI III) ang function niya is Last Screen Value + (Operator) + Current Screen Value.
 const btnsContainer = document.querySelector('.btns-container');
 const arr1 = ['+', '-', '*', '/'];
 const arr2 = ['0', '.', '='];
@@ -46,6 +49,7 @@ function operate (first, second, third) {
                 let quotient = Number(first) / Number(second);
                 return quotient;
             }
+            screen.textContent = 'You cannot divide by 0!';
             return 'You cannot divide by 0!';
 
         default:
@@ -53,11 +57,68 @@ function operate (first, second, third) {
     }
 } // call this using '=' button, parameters are firstNum, secondNum, operator
 
+
+function callEval () {
+    if (operator == null) {return;}
+    if (operator == '/' && secondNum == null || secondNum == 0 || secondNum == '') {
+        screen.textContent = "Error!";
+        return;
+    }
+    let value = operate(firstNum, secondNum, operator);
+    screen.textContent = value;
+    firstNum = `${value}`;
+    secondNum = null;
+    operator = null;
+}
+const eval = document.querySelector('.btn-18');
+eval.addEventListener('mousedown', callEval);
+
 function assignOperator(event) {
+    if (operator !== null) {callEval();}
     operator = event.target.dataset.value;
     operandToggler = 2;
 }
 
+const clearAll = document.querySelector('.btn-0');
+
+function allClear() {
+    firstNum = null;
+    secondNum = null;
+    operator = null;
+    operandToggler = 1;
+    screen.textContent = Number(firstNum);
+}
+clearAll.addEventListener('mousedown', allClear);
+
+
+function backSpace () {
+    if (operandToggler == 1) {
+        if (firstNum == null || firstNum.length < 1) {return;}
+        if (firstNum.length == 1) {firstNum = '00';}
+        firstNum = firstNum.slice(0,-1);
+        screen.textContent = firstNum;
+    } else if (operandToggler == 2) {
+        if (secondNum.length < 1 || secondNum == null) {return;}
+        if (secondNum.length == 1) {secondNum = '00';}
+        secondNum = secondNum.slice(0,-1);
+        screen.textContent = secondNum;
+    }
+}
+
+const sign = document.querySelector('.btn-2');
+function toggleSign () {
+    if (operandToggler == 1) {
+        firstNum = `${Number(firstNum) * -1}`;
+        screen.textContent = firstNum;
+    } else if (operandToggler == 2) {
+        secondNum = `${Number(secondNum) * -1}`;
+        screen.textContent = secondNum;
+    }
+}
+sign.addEventListener('mousedown', toggleSign);
+
+const cDelete = document.querySelector('.btn-1');
+cDelete.addEventListener('mousedown', backSpace);
 
 const screen = document.querySelector('.calc-screen');
 screen.textContent = Number(firstNum);
@@ -72,6 +133,11 @@ function appendNum (event) {
         firstNum = event.target.dataset.value;
     } 
     else if (firstNum.length <= 9) {
+        if (firstNum == '0') {
+            firstNum = event.target.dataset.value;
+            screen.textContent = firstNum;
+            return;
+        }
         firstNum += event.target.dataset.value;
     } 
     screen.textContent = firstNum;
@@ -86,10 +152,10 @@ function appendNum (event) {
     screen.textContent = secondNum;
 }
 }
-// Add din tayo ng variable identifier/toggler. Kunware if variable = 1, update firstNum, if var=2, update second num ganun
+
 
 function appendPoint () {
-    if (firstNum === null) {firstNum = '0';}
+    if (firstNum === null || firstNum === 0) {firstNum = '0';}
     if (firstNum.includes('.')) {return;}
     firstNum += '.';
     screen.textContent = firstNum;
@@ -104,10 +170,6 @@ function listenClick (button) {
     //if(for C, +/-, and decimal)
     //if(for AC)
     //if(% and =, kung kaya sila pagsamahin sa isang function)
-}
-
-function listenOperator (button) {
-    button.addEventListener('mousedown', assignOperator);
 }
 
 calcBtns.forEach(listenClick);
