@@ -1,5 +1,5 @@
 # calculator
 My entry for the calculator TOP Project. Calculator app made using Javascript, HTML, and CSS.
 
-This is an ongoing project.
+I will try to revisit this project after I learn advanced HTML, CSS and Javascript.
 
