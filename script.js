@@ -45,11 +45,10 @@ function operate (first, second, third) {
             return product;
 
         case '/':
-            if(second !==0) { 
+            if(second !== 0) { 
                 let quotient = Number(first) / Number(second);
                 return quotient;
             }
-            screen.textContent = 'You cannot divide by 0!';
             return;
 
         default:
